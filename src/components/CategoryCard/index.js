@@ -17,7 +17,7 @@ export default class CategoryCard extends React.Component {
           iconName={categoryIcons[name] || categoryIcons.default}
         />{" "}
         {name}
-        <ActionContainer onClick={onClick}>
+        <ActionContainer active={active} onClick={onClick}>
           <Icon iconName={active ? "tick" : "plus"} />
         </ActionContainer>
       </Container>

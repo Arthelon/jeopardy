@@ -4,7 +4,7 @@ import { Button, Intent } from "@blueprintjs/core";
 export const Title = styled.h2`text-align: center;`;
 
 export const StartButton = styled(Button).attrs({
-  intent: Intent.PRIMARY,
+  intent: Intent.SUCCESS,
   className: "pt-large",
   rightIconName: "pt-icon-arrow-right"
 })`
@@ -17,6 +17,5 @@ export const ContentContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 2rem;
-  padding-left: 4rem;
-  padding-right: 4rem;
+  min-height: 250px;
 `;

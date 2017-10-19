@@ -2,7 +2,8 @@ import React from "react";
 import { Title, StartButton, ContentContainer } from "./styledComponents";
 import CategoryCard from "components/CategoryCard";
 import firebase from "utils/firebase";
-import { Spinner } from "@blueprintjs/core";
+import { Spinner, Button, Intent, Text } from "@blueprintjs/core";
+import { PageContainer } from "../../styledComponents";
 
 export default class IndexContainer extends React.Component {
   state = {
@@ -23,6 +24,10 @@ export default class IndexContainer extends React.Component {
     }));
   }
 
+  handleCreateCategoryClicked = () => {
+    this.props.history.push("/create");
+  };
+
   handleCategoryClick = chosenId => () => {
     this.setState(state => {
       if (!(state.chosenCategories.indexOf(chosenId) === -1)) {
@@ -37,15 +42,16 @@ export default class IndexContainer extends React.Component {
   };
 
   render() {
-    console.log(this.state);
+    const { chosenCategories, categories } = this.state;
+
     return (
-      <div>
+      <PageContainer>
         <Title>Choose 6 categories</Title>
         <ContentContainer>
-          {!this.state.categories.length && <Spinner />}
-          {this.state.categories.map(category => (
+          {!categories.length && <Spinner />}
+          {categories.map(category => (
             <CategoryCard
-              active={this.state.chosenCategories.indexOf(category.id) !== -1}
+              active={chosenCategories.indexOf(category.id) !== -1}
               onClick={this.handleCategoryClick(category.id)}
               name={category.name}
               type={category.type}
@@ -53,8 +59,25 @@ export default class IndexContainer extends React.Component {
             />
           ))}
         </ContentContainer>
-        <StartButton text="Start" />
-      </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center"
+          }}
+        >
+          <Button
+            text="Create category"
+            rightIconName="add"
+            intent={Intent.PRIMARY}
+            onClick={this.handleCreateCategoryClicked}
+          />
+          <Text>Selected categories: {chosenCategories.length} / 6</Text>
+        </div>
+        {chosenCategories.length === 6 && (
+          <StartButton text="Start" disabled={chosenCategories.length < 6} />
+        )}
+      </PageContainer>
     );
   }
 }

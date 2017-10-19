@@ -321,8 +321,8 @@ module.exports = {
         authDomain: JSON.stringify(process.env.authDomain),
         databaseURL: JSON.stringify(process.env.databaseURL),
         projectId: JSON.stringify(process.env.projectId),
-        storageBucket: process.env.storageBucket,
-        messagingSenderId: process.env.messagingSenderId
+        storageBucket: JSON.stringify(process.env.storageBucket),
+        messagingSenderId: JSON.stringify(process.env.messagingSenderId)
       }
     })
   ],

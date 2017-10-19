@@ -1,6 +1,11 @@
 import styled from "styled-components";
 import { Button } from "@blueprintjs/core";
 
+export const PageContainer = styled.div`
+  width: 80%;
+  margin: 0 auto;
+`;
+
 export const NavBar = styled.div`
   margin-top: 0;
   height: 4rem;
@@ -16,11 +21,4 @@ export const HelpIcon = styled(Button).attrs({
   className: "pt-minimal pt-large",
   iconName: "pt-icon-help"
 })`
-`;
-
-export const HelpCard = styled.div.attrs({
-  className: "pt-card pt-elevation-4"
-})`
-  margin: 4rem;
-  display: block;
 `;
