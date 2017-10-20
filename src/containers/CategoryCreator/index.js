@@ -2,6 +2,7 @@ import React from "react";
 import { PageContainer } from "../../styledComponents";
 import { Tabs2, Tab2, Button, Intent } from "@blueprintjs/core";
 import CreateCategoryForm from "components/forms/CreateCategoryForm";
+import QuestionsForm from "components/forms/QuestionsForm";
 import firebase from "utils/firebase";
 import styled from "styled-components";
 
@@ -13,7 +14,7 @@ const ButtonContainer = styled.div`
 
 export default class CategoryCreatorContainer extends React.Component {
   state = {
-    selectedTabId: "category"
+    selectedTabId: "questions" // change back to category later
   };
 
   handleBackClick = () => {
@@ -50,13 +51,17 @@ export default class CategoryCreatorContainer extends React.Component {
             title="Create Category"
             panel={<CreateCategoryForm onSubmit={this.handleCategorySubmit} />}
           />
-          <Tab2 id="questions" title="Add Questions" />
+          <Tab2
+            id="questions"
+            title="Add Questions"
+            panel={<QuestionsForm />}
+          />
         </Tabs2>
         <ButtonContainer end={selectedTabId === "category"}>
           {selectedTabId === "questions" && (
             <Button
               text="Back"
-              intent={Intent.PRIMARY}
+              intent={Intent.WARNING}
               iconName="arrow-left"
               onClick={this.handleBackClick}
             />
