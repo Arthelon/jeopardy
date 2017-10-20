@@ -1,14 +1,17 @@
 import React from "react";
 import { Title, StartButton, ContentContainer } from "./styledComponents";
 import CategoryCard from "components/CategoryCard";
+import SettingsModal from "components/common/SettingsModal";
 import firebase from "utils/firebase";
 import { Spinner, Button, Intent, Text } from "@blueprintjs/core";
 import { PageContainer } from "../../styledComponents";
+import { injectState } from "freactal";
 
-export default class IndexContainer extends React.Component {
+class IndexContainer extends React.Component {
   state = {
     categories: [],
-    chosenCategories: []
+    chosenCategories: [],
+    showSettingsModal: false
   };
 
   async componentDidMount() {
@@ -23,6 +26,22 @@ export default class IndexContainer extends React.Component {
       categories: Object.keys(categories || []).map(key => categories[key])
     }));
   }
+
+  handleSubmit = settings => {
+    this.props.effects.setSettings({
+      timer: settings.timer
+    });
+    this.props.effects.setCategories({
+      categories: this.state.categories
+    });
+    this.props.history.push("/game");
+  };
+
+  toggleSettingsModal = () => {
+    this.setState(state => ({
+      showSettingsModal: !state.showSettingsModal
+    }));
+  };
 
   handleCreateCategoryClicked = () => {
     this.props.history.push("/create");
@@ -48,7 +67,7 @@ export default class IndexContainer extends React.Component {
   };
 
   render() {
-    const { chosenCategories, categories } = this.state;
+    const { chosenCategories, categories, showSettingsModal } = this.state;
 
     return (
       <PageContainer>
@@ -81,9 +100,20 @@ export default class IndexContainer extends React.Component {
           <Text>Selected categories: {chosenCategories.length} / 6</Text>
         </div>
         {chosenCategories.length === 6 && (
-          <StartButton text="Start" disabled={chosenCategories.length < 6} />
+          <StartButton
+            text="Start"
+            disabled={chosenCategories.length < 6}
+            onClick={this.toggleSettingsModal}
+          />
         )}
+        <SettingsModal
+          isOpen={showSettingsModal}
+          onClose={this.toggleSettingsModal}
+          onSubmit={this.handleSubmit}
+        />
       </PageContainer>
     );
   }
 }
+
+export default injectState(IndexContainer);

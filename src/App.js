@@ -6,6 +6,7 @@ import IndexContainer from "containers/Index";
 import CategoryCreatorContainer from "containers/CategoryCreator";
 import { NavBar, HelpIcon } from "./styledComponents";
 import HelpOverlay from "components/common/HelpOverlay";
+import { provideState, update } from "freactal";
 
 class App extends Component {
   state = {
@@ -38,4 +39,18 @@ class App extends Component {
   }
 }
 
-export default App;
+export default provideState({
+  initialState: () => ({
+    categories: null,
+    settings: {
+      timer: false
+    },
+    players: {}
+  }),
+  effects: {
+    setCategories: update((state, categories) => ({ categories })),
+    setSettings: update((state, settings) => ({
+      settings: Object.assign({}, state.settings, settings)
+    }))
+  }
+})(App);

@@ -1,7 +1,12 @@
 import React from "react";
+import { injectState } from "freactal";
+import { PageContainer } from "../../styledComponents";
 
-export default class GameContainer extends React.Component {
+class GameContainer extends React.Component {
+  // persist game state to localStorage
+
   render() {
-    return <div>I'm a game</div>;
+    return <PageContainer>I'm a game</PageContainer>;
   }
 }
+export default injectState(GameContainer);
