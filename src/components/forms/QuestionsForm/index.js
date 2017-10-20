@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import QuestionCard from "./QuestionCard";
 import update from "immutability-helper";
 import { Button, Intent, Text } from "@blueprintjs/core";
+import toast from "utils/toast";
 import styled from "styled-components";
 
 const MissingText = styled(Text).attrs({
@@ -12,6 +13,10 @@ const MissingText = styled(Text).attrs({
   margin: 2rem;
 `;
 
+const notValid = question => {
+  return !question.answerText || !question.questionText || !question.price;
+};
+
 export default class QuestionsForm extends React.Component {
   constructor(props) {
     super(props);
@@ -20,7 +25,38 @@ export default class QuestionsForm extends React.Component {
     };
     this.refs = new Map();
   }
-  handleSubmit = () => {};
+  handleSubmit = () => {
+    const { questions } = this.state;
+    const invalidQuestions = questions
+      .map((q, idx) => ({ ...q, index: idx }))
+      .filter(notValid)
+      .map(q => q.index);
+    const priceMap = {};
+    if (invalidQuestions.length > 0) {
+      this.setState(state => ({
+        questions: state.questions.map((questions, idx) => ({
+          ...questions,
+          showErrors: invalidQuestions.indexOf(idx) !== -1
+        }))
+      }));
+      return;
+    }
+    questions.forEach(
+      question =>
+        (priceMap[question.price] = priceMap[question.price]
+          ? priceMap[question.price] + 1
+          : 1)
+    );
+    if (Object.keys(priceMap).length < 5) {
+      toast.show({
+        intent: Intent.DANGER,
+        message:
+          "Create at least 5 questions that have all prices between $100 and $500"
+      });
+      return;
+    }
+    this.props.onSubmit(this.state.questions);
+  };
 
   handleQuestionDelete = idx => () => {
     this.setState(state => ({
@@ -57,6 +93,7 @@ export default class QuestionsForm extends React.Component {
             key={idx}
             index={idx}
             price={question.price}
+            showErrors={question.showErrors}
             answerText={question.answerText}
             questionText={question.questionText}
             onChange={this.onQuestionChange(idx)}

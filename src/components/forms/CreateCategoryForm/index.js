@@ -1,5 +1,7 @@
 import React from "react";
-import { Button, Intent } from "@blueprintjs/core";
+import { Button, Intent, FormGroup } from "@blueprintjs/core";
+
+const categories = [{ value: "sports", label: "Sports" }];
 
 export default class CreateCategoryForm extends React.Component {
   state = {
@@ -8,7 +10,7 @@ export default class CreateCategoryForm extends React.Component {
   };
 
   handleNextClick = () => {
-    this.props.onSubmit(this.state.name, this.state.type);
+    this.props.onSubmit({ name: this.state.name, type: this.state.type });
   };
 
   handleNameChange = e => {
@@ -33,9 +35,7 @@ export default class CreateCategoryForm extends React.Component {
 
     return (
       <form>
-        <label className="pt-label">
-          Name
-          <span className="pt-text-muted"> (required)</span>
+        <FormGroup label="Name " requiredLabel>
           <input
             className="pt-input"
             type="text"
@@ -44,22 +44,22 @@ export default class CreateCategoryForm extends React.Component {
             value={name}
             onChange={this.handleNameChange}
           />
-        </label>
-        <label className="pt-label">
-          Type
-          <span className="pt-text-muted"> (required)</span>
+        </FormGroup>
+        <FormGroup label="Type " requiredLabel>
           <div className="pt-select">
             <select value={type} onChange={this.handleTypeChange}>
               <option value="">Choose a category type...</option>
-              <option value="sports">Sports</option>
+              {categories.map(({ label, value }) => (
+                <option value={value}>{label}</option>
+              ))}
             </select>
           </div>
-        </label>
+        </FormGroup>
         <Button
           text="Next"
           intent={Intent.SUCCESS}
           rightIconName="arrow-right"
-          disabled={!name && !type}
+          disabled={!name || !type}
           onClick={this.handleNextClick}
         />
       </form>

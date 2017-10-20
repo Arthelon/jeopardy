@@ -5,6 +5,7 @@ import CreateCategoryForm from "components/forms/CreateCategoryForm";
 import QuestionsForm from "components/forms/QuestionsForm";
 import firebase from "utils/firebase";
 import styled from "styled-components";
+import toast from "utils/toast";
 
 const ButtonContainer = styled.div`
   margin-top: 2rem;
@@ -14,7 +15,8 @@ const ButtonContainer = styled.div`
 
 export default class CategoryCreatorContainer extends React.Component {
   state = {
-    selectedTabId: "questions" // change back to category later
+    selectedTabId: "category", // change back to category later
+    category: {}
   };
 
   handleBackClick = () => {
@@ -34,10 +36,46 @@ export default class CategoryCreatorContainer extends React.Component {
       });
   };
 
-  handleCategorySubmit = () => {
+  handleCategorySubmit = category => {
     this.setState({
-      selectedTabId: "questions"
+      selectedTabId: "questions",
+      category
     });
+  };
+
+  handleQuestionsSubmit = async questions => {
+    try {
+      const database = firebase.database();
+      const { category } = this.state;
+      const newCategory = database
+        .ref()
+        .child("categories")
+        .push();
+      newCategory.set({
+        name: category.name,
+        type: category.type,
+        id: newCategory.key
+      });
+      await Promise.all(
+        questions.map(async question => {
+          await newCategory
+            .child("cards")
+            .push()
+            .set(question);
+        })
+      );
+      toast.show({
+        intent: Intent.SUCCESS,
+        message: `Created category: ${category.name}`
+      });
+      this.props.history.push("/");
+    } catch (err) {
+      console.log(err);
+      toast.show({
+        intent: Intent.DANGER,
+        message: "Something went wrong, please try again."
+      });
+    }
   };
 
   render() {
@@ -54,7 +92,7 @@ export default class CategoryCreatorContainer extends React.Component {
           <Tab2
             id="questions"
             title="Add Questions"
-            panel={<QuestionsForm />}
+            panel={<QuestionsForm onSubmit={this.handleQuestionsSubmit} />}
           />
         </Tabs2>
         <ButtonContainer end={selectedTabId === "category"}>

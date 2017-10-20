@@ -20,6 +20,7 @@ export const Container = styled.div.attrs({
 `;
 
 export const Header = styled.div`
+  cursor: pointer;
   display: flex;
   justify-content: space-between;
   padding: 1rem 1.5rem;

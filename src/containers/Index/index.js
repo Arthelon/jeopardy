@@ -20,7 +20,7 @@ export default class IndexContainer extends React.Component {
         return snapshot.val();
       });
     this.setState(() => ({
-      categories: Object.keys(categories).map(key => categories[key])
+      categories: Object.keys(categories || []).map(key => categories[key])
     }));
   }
 
@@ -33,6 +33,12 @@ export default class IndexContainer extends React.Component {
       if (!(state.chosenCategories.indexOf(chosenId) === -1)) {
         return {
           chosenCategories: state.chosenCategories.filter(id => id !== chosenId)
+        };
+      }
+      if (state.chosenCategories.length === 6) {
+        // remove first item and append latest
+        return {
+          chosenCategories: state.chosenCategories.concat(chosenId).slice(1)
         };
       }
       return {
