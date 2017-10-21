@@ -1,6 +1,6 @@
 import React from "react";
 import { Title, StartButton, ContentContainer } from "./styledComponents";
-import CategoryCard from "components/CategoryCard";
+import CategoryCard from "components/common/CategoryCard";
 import SettingsModal from "components/common/SettingsModal";
 import firebase from "utils/firebase";
 import { Spinner, Button, Intent, Text } from "@blueprintjs/core";
@@ -31,9 +31,16 @@ class IndexContainer extends React.Component {
     this.props.effects.setSettings({
       timer: settings.timer
     });
-    this.props.effects.setCategories({
-      categories: this.state.categories
-    });
+    this.props.effects.setCategories(
+      this.state.categories.filter(
+        category => this.state.chosenCategories.indexOf(category.id) !== -1
+      )
+    );
+    console.log(
+      this.state.categories.filter(
+        category => this.state.chosenCategories.indexOf(category) !== -1
+      )
+    );
     this.props.history.push("/game");
   };
 

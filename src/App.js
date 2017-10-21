@@ -20,6 +20,9 @@ class App extends Component {
   };
 
   render() {
+    // persist game state to localStorage
+    // read localStorage and update freactal
+
     return (
       <BrowserRouter>
         <div>
