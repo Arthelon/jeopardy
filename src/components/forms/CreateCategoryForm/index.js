@@ -1,7 +1,16 @@
 import React from "react";
 import { Button, Intent, FormGroup } from "@blueprintjs/core";
 
-const categories = [{ value: "sports", label: "Sports" }];
+const categories = [
+  { value: "sports", label: "Sports" },
+  { value: "science", label: "Science" },
+  { value: "sports", label: "Sports" },
+  { value: "history", label: "History" },
+  { value: "art", label: "Art" },
+  { value: "animals", label: "Animals" },
+  { value: "television", label: "Television" },
+  { value: "other", label: "other" }
+];
 
 export default class CreateCategoryForm extends React.Component {
   state = {
@@ -31,7 +40,6 @@ export default class CreateCategoryForm extends React.Component {
 
   render() {
     const { name, type } = this.state;
-    console.log(type);
 
     return (
       <form>

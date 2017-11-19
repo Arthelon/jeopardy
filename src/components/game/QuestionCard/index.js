@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { Button } from "@blueprintjs/core";
+import { Button, Intent } from "@blueprintjs/core";
 const Container = styled.div.attrs({
   className: props => `pt-card ${props.interactive && "pt-interactive"}`
 })`
@@ -60,7 +60,11 @@ export default class QuestionCard extends React.Component {
         {cardState === "answer" && (
           <div>
             <p>{answerText}</p>
-            <Button text="Show question" onClick={this.handleButtonClick} />
+            <Button
+              intent={Intent.PRIMARY}
+              text="Show question"
+              onClick={this.handleButtonClick}
+            />
           </div>
         )}
         {cardState === "question" && <p>{questionText}</p>}
