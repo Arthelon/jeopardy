@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 const Container = styled.div`
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   align-items: center;
   padding: 1em 1.5rem;
@@ -13,7 +13,8 @@ const Container = styled.div`
 const Header = styled.div.attrs({
   className: "pt-card"
 })`
-
+    width: 100%;
+    text-align: center;
 `;
 
 export default class CategorySection extends React.Component {
