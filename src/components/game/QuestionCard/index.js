@@ -2,6 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Button, Intent } from "@blueprintjs/core";
+import toast from "utils/toast";
+
+const dailyDoubleChance = 5; // percent
+
 const Container = styled.div.attrs({
   className: props => `pt-card ${props.interactive && "pt-interactive"}`
 })`
@@ -13,7 +17,18 @@ const Container = styled.div.attrs({
 
 const stateTree = {
   price: {
-    CLICK: "answer"
+    CLICK: function() {
+      if (this.state.isDailyDouble) {
+        toast.show({
+          intent: Intent.PRIMARY,
+          message: "Daily Double activated!"
+        });
+        this.setState(prevState => ({
+          price: prevState.price * 2
+        }));
+      }
+      return "answer";
+    }
   },
   answer: {
     BUTTON_CLICK: "question"
@@ -26,14 +41,27 @@ const stateTree = {
 
 export default class QuestionCard extends React.Component {
   state = {
-    cardState: "price" // answer, question, disabled
+    cardState: "price",
+    isDailyDouble: false,
+    price: this.props.price
   };
+
+  // Initializes daily double flag
+  componentDidMount() {
+    this.setState({
+      isDailyDouble: Math.ceil(Math.random() * 100) < dailyDoubleChance // 5 percent chance
+    });
+  }
 
   computeState = action => {
     const stateActions = stateTree[this.state.cardState];
     if (stateActions[action]) {
+      let nextState = stateTree[this.state.cardState][action];
+      if (typeof nextState === "function") {
+        nextState = stateTree[this.state.cardState][action].call(this);
+      }
       this.setState(prevState => ({
-        cardState: stateTree[prevState.cardState][action]
+        cardState: nextState
       }));
     }
   };
@@ -47,8 +75,8 @@ export default class QuestionCard extends React.Component {
   };
 
   render() {
-    const { cardState } = this.state;
-    const { price, answerText, questionText } = this.props;
+    const { cardState, price } = this.state;
+    const { answerText, questionText } = this.props;
 
     return (
       <Container
@@ -56,7 +84,7 @@ export default class QuestionCard extends React.Component {
         onClick={this.handleClick}
         interactive={cardState === "question" || cardState === "price"}
       >
-        {(cardState === "price" || cardState === "completed") && `$${price}`}
+        {`$${price}`}
         {cardState === "answer" && (
           <div>
             <p>{answerText}</p>
