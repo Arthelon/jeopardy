@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import QuestionCard from "../QuestionCard";
 
 const Container = styled.div`
   display: inline-flex;
@@ -13,17 +14,26 @@ const Container = styled.div`
 const Header = styled.div.attrs({
   className: "pt-card"
 })`
-    width: 100%;
-    text-align: center;
+  font-size: 1.2em;
+  font-style: bold;
+  width: 100%;
+  text-align: center;
 `;
 
 export default class CategorySection extends React.Component {
   render() {
-    const { name } = this.props;
+    const { name, cards } = this.props;
+    const cardList = Object.keys(cards)
+      .map(cardId => ({
+        id: cardId,
+        ...cards[cardId]
+      }))
+      .sort((first, sec) => first.price > sec.price);
 
     return (
       <Container>
         <Header>{name}</Header>
+        {cardList.map(card => <QuestionCard {...card} />)}
       </Container>
     );
   }

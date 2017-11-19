@@ -51,7 +51,7 @@ export default class CategoryCreatorContainer extends React.Component {
         .ref()
         .child("categories")
         .push();
-      newCategory.set({
+      await newCategory.set({
         name: category.name,
         type: category.type,
         id: newCategory.key
