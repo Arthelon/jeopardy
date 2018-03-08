@@ -1,1 +1,6 @@
-apiKey=YOUR_API_KEY
+apiKey=
+authDomain=
+databaseURL=
+projectId=
+storageBucket=
+messagingSenderId=

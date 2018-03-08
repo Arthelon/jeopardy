@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Button, Intent } from "@blueprintjs/core";
 import toast from "utils/toast";
 
-const dailyDoubleChance = 5; // percent
+const dailyDoubleChance = 5; // percent chance for daily double
 
 const Container = styled.div.attrs({
   className: props => `pt-card ${props.interactive && "pt-interactive"}`
@@ -15,6 +15,7 @@ const Container = styled.div.attrs({
   ${props => props.completed && "opacity: 0.4"};
 `;
 
+// mapping of actions to states to set when that action is invoked
 const stateTree = {
   price: {
     CLICK: function() {
@@ -53,6 +54,11 @@ export default class QuestionCard extends React.Component {
     });
   }
 
+  /**
+   * Sets component state based on the action passed. 
+   * 
+   * @param {string} action - Action name
+   */
   computeState = action => {
     const stateActions = stateTree[this.state.cardState];
     if (stateActions[action]) {
@@ -86,7 +92,7 @@ export default class QuestionCard extends React.Component {
       >
         {`$${price}`}
         {cardState === "answer" && (
-          <div>
+          <div style={{ marginTop: "0.4em" }}>
             <p>{answerText}</p>
             <Button
               intent={Intent.PRIMARY}

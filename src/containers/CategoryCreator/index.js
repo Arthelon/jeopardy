@@ -47,15 +47,18 @@ export default class CategoryCreatorContainer extends React.Component {
     try {
       const database = firebase.database();
       const { category } = this.state;
+      // creates new blank category record
       const newCategory = database
         .ref()
         .child("categories")
         .push();
+      // assigns fields to category record
       await newCategory.set({
         name: category.name,
         type: category.type,
         id: newCategory.key
       });
+      // add cards
       await Promise.all(
         questions.map(async question => {
           await newCategory

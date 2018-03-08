@@ -15,7 +15,8 @@ export const StartButton = styled(Button).attrs({
 
 export const ContentContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   margin-top: 2rem;
-  min-height: 250px;
+  margin-bottom: 2rem;
 `;

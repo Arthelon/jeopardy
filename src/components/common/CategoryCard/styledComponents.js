@@ -5,7 +5,8 @@ export const Container = styled.div.attrs({
   className: "pt-card"
 })`
   padding: 0;
-  height: 60px;
+  margin-top: 1em;
+  min-height: 60px;
   display: flex;
   align-items: center;
   margin-left: 1rem;

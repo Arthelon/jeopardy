@@ -14,7 +14,7 @@ class GameContainer extends React.Component {
     const { categories } = this.props.state;
     console.log(categories);
     return (
-      <PageContainer>
+      <div style={{ width: "100%" }}>
         {categories &&
           categories.map(category => {
             return (
@@ -26,7 +26,7 @@ class GameContainer extends React.Component {
               />
             );
           })}
-      </PageContainer>
+      </div>
     );
   }
 }
